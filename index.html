@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday! 🎉</title>
+    <style>
+        /* Modern CSS reset and setup */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            perspective: 1000px;
+        }
+
+        /* Birthday Card Styling */
+        .card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 3rem 2rem;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+            animation: float 4s ease-in-out infinite, fadeIn 1.5s ease-out;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            z-index: 10;
+        }
+
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(1deg); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Typography & Elements */
+        .emoji-banner {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        h1 {
+            color: #4a4a4a;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, #ff6b6b, #ff8e53);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p {
+            color: #666;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        /* Interactive Button */
+        .btn {
+            background: linear-gradient(45deg, #ff6b6b, #ff8e53);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.6);
+        }
+
+        .btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Confetti Canvas */
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="confetti"></canvas>
+
+    <div class="card">
+        <div class="emoji-banner">🎂✨</div>
+         <!-- Feel free to change the name below! -->
+        <h1>Happy Birthday!</h1> 
+        <p>Go mo lang ng go yan buhay mo hanggat gusto mo, update ko tong page mo sa 95th Birthday 🥳</p>
+         <!-- Web Post with Image -->
+        <article class="post">
+            <h2>🎈🎂✨From Boxsh Yah✨🎂🎈 </h2>
+	    <h2> -Loy</h2>
+       
+    
+        <!-- Displaying the requested image file -->
+            <img src="loy.jpg" alt="Happy Birthday ! ! !" width="600" height="600">
+        </article>
+    </div>
+
+
+
+
+    <script>
+        // Confetti Effect Logic
+        const canvas = document.getElementById('confetti');
+        const ctx = canvas.getContext('2d');
+        let pieces = [];
+        const numberOfPieces = 150;
+        const colors = ['#f54242', '#f5a442', '#f5f542', '#42f554', '#4287f5', '#a442f5', '#f542b3'];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Confetti {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height - canvas.height;
+                this.rotation = Math.random() * 360;
+                this.rotationSpeed = Math.random() * 4 - 2;
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+                this.width = Math.random() * 8 + 6;
+                this.height = Math.random() * 15 + 10;
+                this.speed = Math.random() * 3 + 2;
+            }
+
+            update() {
+                this.y += this.speed;
+                this.rotation += this.rotationSpeed;
+                if (this.y > canvas.height) {
+                    this.y = -20;
+                    this.x = Math.random() * canvas.width;
+                }
+            }
+
+            draw() {
+                ctx.save();
+                ctx.translate(this.x + this.width / 2, this.y + this.height / 2);
+                ctx.rotate((this.rotation * Math.PI) / 180);
+                ctx.fillStyle = this.color;
+                ctx.fillRect(-this.width / 2, -this.height / 2, this.width, this.height);
+                ctx.restore();
+            }
+        }
+
+        function init() {
+            for (let i = 0; i < numberOfPieces; i++) {
+                pieces.push(new Confetti());
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            pieces.forEach((piece) => {
+                piece.update();
+                piece.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+
+        // Make button launch extra confetti streams
+        function burstConfetti() {
+            for (let i = 0; i < 50; i++) {
+                let p = new Confetti();
+                p.y = Math.random() * canvas.height * 0.5 + canvas.height * 0.2; // center bursts
+                p.speed = Math.random() * 5 + 4;
+                pieces.push(p);
+                // Keep the array size under control
+                if(pieces.length > 300) pieces.shift();
+            }
+        }
+
+        init();
+        animate();
+    </script>
+</body>
+</html>
